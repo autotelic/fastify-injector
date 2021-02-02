@@ -3,8 +3,12 @@
   "version": "0.0.0",
   "description": "A testing util for injecting Fastify plugin dependencies.",
   "main": "index.js",
+  "files": [],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "fix": "npm run lint -- --fix",
+    "lint": "standard",
+    "test": "tap --100 -j1 -R classic",
+    "validate": "npm run lint && npm run test"
   },
   "keywords": [
     "fastify",
@@ -19,5 +23,22 @@
     "di"
   ],
   "author": "Holden Whitehead <holden@autotelic.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/autotelic/fastify-injector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/autotelic/fastify-injector/issues"
+  },
+  "homepage": "https://github.com/autotelic/fastify-injector#readme",
+  "devDependencies": {
+    "fastify": "^3.11.0",
+    "standard": "^16.0.3",
+    "tap": "^14.11.0"
+  },
+  "dependencies": {
+    "fastify-autoload": "^3.4.2",
+    "fastify-plugin": "^3.0.0"
+  }
 }
