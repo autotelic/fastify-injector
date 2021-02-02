@@ -1,0 +1,23 @@
+{
+  "name": "@autotelic/fastify-injector",
+  "version": "0.0.0",
+  "description": "A testing util for injecting Fastify plugin dependencies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fastify",
+    "test",
+    "testing",
+    "stub",
+    "fake",
+    "spy",
+    "fixtures",
+    "unit",
+    "dependency injection",
+    "di"
+  ],
+  "author": "Holden Whitehead <holden@autotelic.com>",
+  "license": "MIT"
+}
