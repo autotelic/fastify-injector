@@ -3,6 +3,7 @@
 A testing util for injecting plugin dependencies into a [Fastify](https://www.fastify.io/docs/latest/) app.
 
 ## Contents
+
   - [Usage](#usage)
   - [API](#api)
     - [`fastifyInjector`](#fastifyinjector)
@@ -15,6 +16,7 @@ A testing util for injecting plugin dependencies into a [Fastify](https://www.fa
         - [Plugin Encapsulation](#plugin-encapsulation)
 
 ## Usage
+
 ```sh
 npm i --save-dev @autotelic/fastify-injector
 ```
@@ -47,6 +49,7 @@ test('root plugin', async ({ is }) => {
 `fastifyInjector` is a function that accepts an options object and a Fastify instance (*optional* - defaults to `require('fastify')()`). It returns a proxied Fastify instance that will inject the specified decorators and plugins if/when their targets are added to the instance.
 
 #### Options
+
 The `fastifyInjector` options object contains the following properties:
 
  - `decorators`: `{ [decoratorName]: decorator }` - An object containing all decorators to be injected. The keys for each decorator must match the name of the decorator to be replaced.
@@ -55,7 +58,7 @@ The `fastifyInjector` options object contains the following properties:
 
  - `replyDecorators`: `{ [replyDecoratorName]: replyDecorator }` - An object containing all reply decorators to be injected. The keys for each reply decorator must match the name of the reply decorator to be replaced.
 
- - `plugins`: `{ [pluginName]: plugin }` - An object containing all plugins to be injected. The keys for each plugin must match the name of the plugin to be replaced. For this to work, the original plugin, must either have the `Symbol.for('fastify.display-name')` property (ie. use fastify-plugin and provide a `name`) or be a named function (ie. have the `Function.name` property) - if the plugin has both, `Symbol.for('fastify.display-name')` will be used.
+ - `plugins`: `{ [pluginName]: plugin }` - An object containing all plugins to be injected. The keys for each plugin must match the name of the plugin to be replaced. For this to work, the original plugin must either have the `Symbol.for('fastify.display-name')` property (ie. use fastify-plugin and provide a `name`) or be a named function (ie. have the `Function.name` property) - if the plugin has both, `Symbol.for('fastify.display-name')` will be used.
 
 #### Decorators
 
@@ -82,6 +85,7 @@ await app.ready()
 ```
 
 #### Features
+
 ##### Passthrough Functionality
 
 All injected decorator functions and plugins are provided access to the function they are replacing. The original functions are added to their replacements as the `Symbol.for('call-original')` property.
