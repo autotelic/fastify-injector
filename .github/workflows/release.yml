@@ -6,7 +6,6 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    steps:
     strategy:
       matrix:
         node: [ '10', '12', '14' ]
