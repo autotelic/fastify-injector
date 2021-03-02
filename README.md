@@ -29,7 +29,7 @@ const rootPlugin = require('../index.js')
 
 test('root plugin', async ({ is }) => {
   const injectFoo = () => 'bar'
-  const app = fastifyInjector({ { requestDecorators: { foo: injectFoo } } })
+  const app = fastifyInjector({ requestDecorators: { foo: injectFoo } })
   // If the rootPlugin, or one of its child plugins adds a requestDecorator with the
   // name 'foo', injectFoo will be added in place of the original decorator value.
   app.register(rootPlugin)
@@ -107,7 +107,7 @@ test('root plugin', async ({ is }) => {
     return originalFoo(...args)
   }
 
-  const app = fastifyInjector({ { requestDecorators: { foo: injectFoo } } })
+  const app = fastifyInjector({ requestDecorators: { foo: injectFoo } })
   app.register(rootPlugin)
   await app.ready()
   const result = await app.inject({
