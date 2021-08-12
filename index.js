@@ -1,4 +1,5 @@
 'use strict'
+
 const autoload = require('fastify-autoload')
 const fp = require('fastify-plugin')
 
@@ -23,7 +24,10 @@ function fastifyInjector (injectorOpts = {}, fastify = require('fastify')()) {
         delete injectors[prop][name]
         return target[prop](name, injectDecorator)
       }
-      return target[prop](name, value)
+      target[prop](name, value)
+
+      // Return the fastify instance to support method chaining.
+      return this
     }
   }
 
@@ -56,9 +60,13 @@ function fastifyInjector (injectorOpts = {}, fastify = require('fastify')()) {
         // Provide access to the original plugin.
         injectPlugin[CALL_ORIGINAL] = originalPlugin
         delete injectors.plugins[pluginName]
-        return register(wrapPlugin(copyPluginEncapsulation(injectPlugin)), opts)
+        register(wrapPlugin(copyPluginEncapsulation(injectPlugin)), opts)
+      } else {
+        register(wrapPlugin(originalPlugin), opts)
       }
-      return register(wrapPlugin(originalPlugin), opts)
+
+      // Return the fastify instance to support method chaining.
+      return this
     }
   }
 
