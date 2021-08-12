@@ -50,14 +50,15 @@ test('fastifyInjector: injecting decorators with passthrough', async ({ is, tear
   const foo = () => 'bar'
 
   const app = fastifyInjector(injectOpts)
-  app.decorate('foo', foo)
-  app.decorateReply('foo', foo)
-  app.decorateRequest('foo', foo)
-  app.register(async function nestedRoute (instance) {
-    app.get('/', async function handler (request, reply) {
-      return { payload: `${instance.foo()}, ${request.foo()}, ${reply.foo()}` }
+  app
+    .decorate('foo', foo)
+    .decorateReply('foo', foo)
+    .decorateRequest('foo', foo)
+    .register(async function nestedRoute (instance) {
+      app.get('/', async function handler (request, reply) {
+        return { payload: `${instance.foo()}, ${request.foo()}, ${reply.foo()}` }
+      })
     })
-  })
   await app.ready()
 
   const result = await app.inject({
@@ -116,8 +117,11 @@ test('fastifyInjector: plugins and encapsulation', async ({ is, same, teardown }
   }
 
   const app = fastifyInjector(injectOpts)
-  app.register(barPlugin, { bar: 'foo' })
-  app.register(fooRoute, { foo: 'bar' })
+
+  app
+    .register(barPlugin, { bar: 'foo' })
+    .register(fooRoute, { foo: 'bar' })
+
   await app.ready()
 
   same(app.barOpts, { bar: 'foo' })
