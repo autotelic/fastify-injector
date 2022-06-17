@@ -32,6 +32,9 @@
     "url": "https://github.com/autotelic/fastify-injector/issues"
   },
   "homepage": "https://github.com/autotelic/fastify-injector#readme",
+  "engines": {
+    "node": ">=14"
+  },
   "devDependencies": {
     "fastify": "^4.0.3",
     "standard": "^17.0.0",
