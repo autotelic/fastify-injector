@@ -32,13 +32,16 @@
     "url": "https://github.com/autotelic/fastify-injector/issues"
   },
   "homepage": "https://github.com/autotelic/fastify-injector#readme",
+  "engines": {
+    "node": ">=14"
+  },
   "devDependencies": {
-    "fastify": "^3.11.0",
-    "standard": "^16.0.3",
-    "tap": "^14.11.0"
+    "fastify": "^4.0.3",
+    "standard": "^17.0.0",
+    "tap": "^16.3.0"
   },
   "dependencies": {
-    "fastify-autoload": "^3.4.2",
-    "fastify-plugin": "^3.0.0"
+    "@fastify/autoload": "^5.0.0",
+    "fastify-plugin": "^3.0.1"
   }
 }
