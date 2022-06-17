@@ -1,6 +1,6 @@
 'use strict'
 
-const autoload = require('fastify-autoload')
+const autoload = require('@fastify/autoload')
 const fp = require('fastify-plugin')
 
 const CALL_ORIGINAL = Symbol.for('call-original')
