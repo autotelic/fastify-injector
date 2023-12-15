@@ -102,8 +102,8 @@ test('root plugin', async ({ is }) => {
   function injectFoo (...args) {
     fooCalls.push(args)
     // Note: if the original decorator uses `this` to access the request/reply/instance
-    // you will need to bind it -> `Symbol.for('call-original').bind(this)`
-    const originalFoo = Symbol.for('call-original')
+    // you will need to bind it -> `injectFoo[Symbol.for('call-original')].bind(this)`
+    const originalFoo = injectFoo[Symbol.for('call-original')]
     return originalFoo(...args)
   }
 
