@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "@autotelic/eslint-config-js"
+  ],
+  "settings": {
+    "node": {
+      "version": "^18.x"
+    }
+  },
+  "rules": {
+    "multiline-comment-style": "off"
+  }
+}
