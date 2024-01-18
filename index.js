@@ -43,15 +43,13 @@ function fastifyInjector (injectorOpts = {}, fastify = require('fastify')()) {
         return targetPlugin
       }
 
-      const wrapPlugin = (plugin) => {
-        return copyPluginEncapsulation(
-          async function wrappedPlugin (instance, opts, done) {
-            // Proxy encapsulated instance.
-            const proxy = fastifyInjector(injectorOpts, instance)
-            return plugin(proxy, opts, done)
-          }
-        )
-      }
+      const wrapPlugin = (plugin) => copyPluginEncapsulation(
+        (instance, opts, done) => {
+          // Proxy encapsulated instance.
+          const proxy = fastifyInjector(injectorOpts, instance)
+          return plugin(proxy, opts, done)
+        }
+      )
 
       const pluginName = originalPlugin[Symbol.for('fastify.display-name')] || originalPlugin.name
       const injectPlugin = injectors.plugins[pluginName]
@@ -75,7 +73,7 @@ function fastifyInjector (injectorOpts = {}, fastify = require('fastify')()) {
     revoke
   } = Proxy.revocable(
     fastify, {
-      get: function (target, prop, receiver) {
+      get (target, prop, receiver) {
         if (prop === 'decorate' || prop === 'decorateReply' || prop === 'decorateRequest') {
           return wrapDecorateMethod(target, prop)
         }
@@ -88,12 +86,10 @@ function fastifyInjector (injectorOpts = {}, fastify = require('fastify')()) {
   )
 
   if (!proxy.loadFixtures) {
-    proxy.decorate('loadFixtures', (fixtures) => {
-      return Promise.all((Array.isArray(fixtures) ? fixtures : [fixtures]).map((fixture) => {
-        const opts = typeof fixture !== 'string' ? fixture : { dir: fixture, dirNameRoutePrefix: false, maxDepth: 1 }
-        return proxy.register(autoload, opts)
-      }))
-    })
+    proxy.decorate('loadFixtures', (fixtures) => Promise.all((Array.isArray(fixtures) ? fixtures : [fixtures]).map((fixture) => {
+      const opts = typeof fixture !== 'string' ? fixture : { dir: fixture, dirNameRoutePrefix: false, maxDepth: 1 }
+      return proxy.register(autoload, opts)
+    })))
   }
 
   proxy.addHook('onClose', () => {

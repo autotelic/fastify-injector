@@ -1,12 +1,13 @@
 'use strict '
 
-const { test } = require('tap')
-const fp = require('fastify-plugin')
 const { join } = require('path')
+
+const fp = require('fastify-plugin')
+const { test } = require('tap')
 
 const fastifyInjector = require('..')
 
-test('fastifyInjector: injecting decorators', async ({ is, teardown }) => {
+test('fastifyInjector: injecting decorators', async ({ equal, teardown }) => {
   teardown(async () => app.close())
 
   const injectOpts = {
@@ -31,10 +32,10 @@ test('fastifyInjector: injecting decorators', async ({ is, teardown }) => {
     url: '/'
   })
 
-  is(result.json().payload, 'decorate injected, decorateRequest injected, decorateReply injected')
+  equal(result.json().payload, 'decorate injected, decorateRequest injected, decorateReply injected')
 })
 
-test('fastifyInjector: injecting decorators with passthrough', async ({ is, teardown }) => {
+test('fastifyInjector: injecting decorators with passthrough', async ({ equal, teardown }) => {
   teardown(async () => app.close())
 
   function injectFoo () {
@@ -66,14 +67,14 @@ test('fastifyInjector: injecting decorators with passthrough', async ({ is, tear
     url: '/'
   })
 
-  is(result.json().payload, 'bar, bar, bar -> passthrough')
+  equal(result.json().payload, 'bar, bar, bar -> passthrough')
 })
 
-test('fastifyInjector: plugins and encapsulation', async ({ is, same, teardown }) => {
+test('fastifyInjector: plugins and encapsulation', async ({ equal, same, teardown }) => {
   teardown(async () => app.close())
 
   async function fooRoute (instance, opts) {
-    instance.decorateReply('getData', async function () {
+    instance.decorateReply('getData', async function getData () {
       const reply = this
       return reply.bar()
     })
@@ -125,14 +126,14 @@ test('fastifyInjector: plugins and encapsulation', async ({ is, same, teardown }
   await app.ready()
 
   same(app.barOpts, { bar: 'foo' })
-  is(app.fooOpts, undefined, 'Should maintain original plugin\'s encapsulation')
+  equal(app.fooOpts, undefined, 'Should maintain original plugin\'s encapsulation')
 
   const result = await app.inject({
     method: 'GET',
     url: '/foo'
   })
 
-  is(result.json().payload, 'foobar -> passthrough', 'should inject decorators applied by encapsulated plugin.')
+  equal(result.json().payload, 'foobar -> passthrough', 'should inject decorators applied by encapsulated plugin.')
 })
 
 const fixtureDir = {
@@ -150,7 +151,7 @@ const fixtureDir = {
   }
 }
 
-test('fastifyInjector: loadFixtures - single dir', async ({ error, is, testdir, teardown }) => {
+test('fastifyInjector: loadFixtures - single dir', async ({ error, equal, testdir, teardown }) => {
   teardown(async () => app.close())
 
   const fixtures = testdir(fixtureDir)
@@ -173,11 +174,11 @@ test('fastifyInjector: loadFixtures - single dir', async ({ error, is, testdir, 
     url: '/ping'
   })
 
-  is(resultFoo.json().payload, 'bar')
-  is(resultPing.json().payload, 'pong')
+  equal(resultFoo.json().payload, 'bar')
+  equal(resultPing.json().payload, 'pong')
 })
 
-test('fastifyInjector: loadFixtures - multi dir with custom autoload config.', async ({ error, is, testdir, teardown }) => {
+test('fastifyInjector: loadFixtures - multi dir with custom autoload config.', async ({ error, equal, testdir, teardown }) => {
   teardown(async () => app.close())
 
   const fixtures = testdir(fixtureDir)
@@ -203,6 +204,6 @@ test('fastifyInjector: loadFixtures - multi dir with custom autoload config.', a
     url: '/test/ping'
   })
 
-  is(resultFoo.json().payload, 'bar')
-  is(resultPing.json().payload, 'pong')
+  equal(resultFoo.json().payload, 'bar')
+  equal(resultPing.json().payload, 'pong')
 })
